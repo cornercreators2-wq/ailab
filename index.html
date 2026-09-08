@@ -5,743 +5,291 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#05070a">
 <title>AI Creator Lab</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  /* ============ AICL LANDING PAGE v2 (Dark But Dynamic) ============ */
-  :root{
-    --bg-0:#05070a;
-    --bg-1:#0a0e14;
-    --bg-2:#10151d;
-    --card:#12181f;
-    --card-2:#161d26;
-    --border:rgba(255,255,255,0.08);
-    --border-hi:rgba(88,255,150,0.35);
-    --text-0:#f5f7f6;
-    --text-1:#c7d0cd;
-    --text-2:#8a9490;
-    --green:#3dff96;
-    --green-deep:#12c96a;
-    --violet:#8b5cf6;
-    --blue:#4ea8ff;
-    --gold:#ffcf5c;
-    --shadow-glow: 0 0 60px rgba(61,255,150,0.15);
-    --radius: 18px;
-    --maxw: 1180px;
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;background:var(--bg-0);margin:0;padding:0;}
-  body{
-    margin:0;padding:0;
-    background:var(--bg-0);
-    color:var(--text-0);
-    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-    position:relative;
-  }
-  /* If the surrounding page allows content under the notch/status bar,
-     let our own background extend into that area instead of leaving a gap. */
-  .topbar{padding-top:env(safe-area-inset-top);}
-  /* Defensive: ClickFunnels' own page theme sets its own heading colors
-     with rules that can leak into pasted custom code. Force ours to win
-     regardless, so headings never silently inherit a dark theme color. */
-  h1,h2,h3,h4,h5,h6{color:var(--text-0) !important;font-family:'Sora',Inter,sans-serif;letter-spacing:-0.02em;}
-  .disp{font-family:'Sora',Inter,sans-serif;letter-spacing:-0.02em;}
-  a{color:inherit;}
-  img{max-width:100%;display:block;}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
-  .eyebrow{
-    display:inline-flex;align-items:center;gap:8px;
-    background:rgba(61,255,150,0.08);
-    border:1px solid rgba(61,255,150,0.3);
-    color:var(--green);
-    font-weight:700;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;
-    padding:8px 16px;border-radius:999px;
-  }
-  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green);animation:pulse 1.8s infinite;}
-  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
-  /* ---------- animated aurora background ---------- */
-  .aurora{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
-  .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:0.35;will-change:transform;}
-  .blob.b1{width:620px;height:620px;background:radial-gradient(circle,var(--green) 0%,transparent 70%);top:-220px;left:-160px;animation:float1 22s ease-in-out infinite;}
-  .blob.b2{width:520px;height:520px;background:radial-gradient(circle,var(--violet) 0%,transparent 70%);top:20%;right:-200px;animation:float2 26s ease-in-out infinite;}
-  .blob.b3{width:480px;height:480px;background:radial-gradient(circle,var(--blue) 0%,transparent 70%);bottom:-180px;left:15%;animation:float3 30s ease-in-out infinite;}
-  .brand-watermark{position:absolute;top:6%;right:-4%;width:520px;opacity:0.05;filter:saturate(0.6);animation:float2 34s ease-in-out infinite;}
-  @keyframes float1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(60px,80px) scale(1.15);}}
-  @keyframes float2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-70px,50px) scale(1.1);}}
-  @keyframes float3{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(40px,-60px) scale(1.2);}}
-  main, header, footer, section{position:relative;z-index:1;}
-  /* ---------- top bar ---------- */
-  .topbar{
-    position:sticky;top:0;z-index:50;
-    background:rgba(5,7,10,0.7);
-    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--border);
-  }
-  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;}
-  .logo{font-family:'Sora',sans-serif;font-weight:800;font-size:18px;letter-spacing:-0.01em;display:flex;align-items:center;gap:10px;color:var(--text-0) !important;}
-  .logo .mark{width:30px;height:30px;border-radius:8px;box-shadow:0 0 16px rgba(61,255,150,0.35);display:block;}
-  .logo .mark img{width:100%;height:100%;border-radius:8px;display:block;}
-  .icon-inline{width:14px;height:14px;border-radius:4px;display:inline-block;vertical-align:-2px;margin-right:2px;}
-  .btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    font-family:'Inter',sans-serif;font-weight:700;font-size:15px;
-    padding:14px 28px;border-radius:999px;border:none;cursor:pointer;
-    text-decoration:none;transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
-    white-space:nowrap;
-  }
-  .btn-primary{
-    background:linear-gradient(135deg,var(--green) 0%,var(--green-deep) 100%);
-    color:#03150a;box-shadow:0 8px 30px rgba(61,255,150,0.35);
-  }
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(61,255,150,0.5);filter:brightness(1.05);}
-  .btn-sm{padding:10px 20px;font-size:13px;}
-  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-0);}
-  /* ---------- hero ---------- */
-  .hero{padding:64px 0 40px;text-align:center;}
-  .hero h1{
-    font-size:clamp(30px,5.2vw,58px);line-height:1.06;font-weight:800;margin:22px 0 18px;
-    background:linear-gradient(180deg,#ffffff 0%, #d9ffe9 60%, #9dffce 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent !important;
-  }
-  .hero h1 br.mob-br{display:none;}
-  .hero h1 span{
-    background:linear-gradient(135deg,var(--green),var(--blue));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .hero p.sub{font-size:clamp(16px,2vw,20px);color:var(--text-1);max-width:720px;margin:0 auto 34px;line-height:1.55;}
-  .video-shell{
-    max-width:880px;margin:0 auto;position:relative;border-radius:22px;padding:3px;
-    background:linear-gradient(135deg,rgba(61,255,150,0.55),rgba(139,92,246,0.4),rgba(78,168,255,0.45));
-    box-shadow:0 30px 90px rgba(0,0,0,0.55), var(--shadow-glow);
-  }
-  .video-inner{
-    background:#000;border-radius:19px;overflow:hidden;
-    /* Safari/WebKit has a long-standing bug where a border-radius + overflow:hidden
-       ancestor fails to composite a hardware-accelerated video layer inside it —
-       the video keeps playing (audio works) but never paints. Forcing this element
-       onto its own layer via mask-image (Safari's own clipping path instead of the
-       buggy overflow-clip path) is the standard fix for that exact bug class. */
-    -webkit-mask-image:-webkit-radial-gradient(white, black);
-    -webkit-transform:translateZ(0);
-    transform:translateZ(0);
-  }
-  .video-inner > div{-webkit-transform:translateZ(0);transform:translateZ(0);}
-  .hero-cta{margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:10px;}
-  .hero-cta small{color:var(--text-2);font-size:13px;}
-  .apply-hero{
-    max-width:880px;margin:26px auto 0;
-    background:var(--card);border:1px solid var(--border);border-radius:20px;
-    padding:22px 22px 8px;box-shadow:var(--shadow-glow);
-    overflow:hidden;
-    /* NOTE: do not add `contain:layout` or `contain:paint` here. CSS containment
-       makes this element the containing block for any position:fixed descendant.
-       Typeform's embed switches to a fixed, full-viewport overlay on mobile when
-       you tap Start -- with containment on, that overlay gets trapped inside this
-       small card instead of covering the screen, which is what made the form
-       appear to shrink and vanish on mobile. Desktop never triggers that
-       fullscreen mode, which is why it worked fine there. */
-  }
-  .apply-hero .apply-head{text-align:center;margin-bottom:6px;}
-  .apply-hero .apply-head h3{font-size:19px;margin:6px 0 4px;}
-  .apply-hero .apply-head p{color:var(--text-2);font-size:13.5px;margin:0 0 4px;}
-  #tf-inline{width:100%;height:520px;max-height:520px !important;border-radius:14px;overflow:hidden !important;border:0;display:block;}
-  #tf-inline iframe{position:relative !important;height:100% !important;max-height:100% !important;}
-  .trust-row{
-    margin-top:32px;display:flex;flex-wrap:wrap;gap:28px;justify-content:center;
-    color:var(--text-2);font-size:13px;font-weight:600;letter-spacing:0.02em;
-  }
-  .trust-row span{display:flex;align-items:center;gap:8px;}
-  .trust-row .ck{color:var(--green);}
-  /* ---------- stats ---------- */
-  .stats{padding:50px 0;}
-  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
-  .stat-card{
-    background:linear-gradient(180deg,var(--card) 0%, var(--card-2) 100%);
-    border:1px solid var(--border);border-radius:var(--radius);
-    padding:26px 18px;text-align:center;transition:border-color .2s, transform .2s;
-  }
-  .stat-card:hover{border-color:var(--border-hi);transform:translateY(-4px);}
-  .stat-num{font-family:'Sora',sans-serif;font-weight:800;font-size:clamp(22px,3vw,32px);
-    background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent;}
-  .stat-label{margin-top:8px;font-size:12.5px;color:var(--text-2);font-weight:600;line-height:1.4;}
-  .stat-src{margin-top:6px;font-size:11px;color:var(--text-2);opacity:0.7;}
-  /* ---------- section heading ---------- */
-  .sec-head{text-align:center;max-width:680px;margin:0 auto 44px;}
-  .sec-head h2{font-size:clamp(26px,4vw,40px);font-weight:800;margin:16px 0 12px;}
-  .sec-head p{color:var(--text-1);font-size:16px;line-height:1.6;}
-  section{padding:70px 0;}
-  section.tight{padding:40px 0;}
-  /* ---------- case studies ---------- */
-  .cs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-  .cs-card{
-    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;
-    transition:transform .2s, border-color .2s;
-  }
-  .cs-card:hover{transform:translateY(-6px);border-color:var(--border-hi);}
-  .cs-thumb{position:relative;aspect-ratio:16/9;background:#000;cursor:pointer;}
-  .cs-thumb img{width:100%;height:100%;object-fit:cover;opacity:0.85;}
-  .cs-thumb .play{
-    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  }
-  .cs-thumb .play span{
-    width:58px;height:58px;border-radius:50%;
-    background:rgba(61,255,150,0.9);display:flex;align-items:center;justify-content:center;
-    box-shadow:0 0 30px rgba(61,255,150,0.6);transition:transform .18s;
-  }
-  .cs-thumb:hover .play span{transform:scale(1.1);}
-  .cs-thumb .play svg{margin-left:3px;}
-  .cs-body{padding:16px 18px 20px;}
-  .cs-body .tag{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.08em;}
-  .cs-body h4{margin:8px 0 0;font-size:15px;font-weight:700;line-height:1.4;}
-  /* ---------- featured story ---------- */
-  .story{
-    background:radial-gradient(120% 140% at 10% 0%, rgba(139,92,246,0.16), transparent 55%),
-               radial-gradient(120% 140% at 90% 100%, rgba(61,255,150,0.14), transparent 55%),
-               var(--card);
-    border:1px solid var(--border);border-radius:24px;padding:48px;display:grid;grid-template-columns:1.15fr 0.85fr;gap:40px;align-items:center;
-  }
-  .story .quote-mark{font-family:'Sora',sans-serif;font-size:70px;line-height:0.5;color:var(--green);opacity:0.55;}
-  .story blockquote{margin:14px 0 0;font-size:17px;line-height:1.75;color:var(--text-1);white-space:pre-line;}
-  .story .who{margin-top:22px;display:flex;align-items:center;gap:12px;}
-  .story .who .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--violet));display:flex;align-items:center;justify-content:center;font-weight:800;color:#03150a;}
-  .story .who .name{font-weight:700;font-size:14.5px;}
-  .story .who .role{font-size:12.5px;color:var(--text-2);}
-  .story .img-wrap{border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 20px 60px rgba(0,0,0,0.5);}
-  /* ---------- community / team photo ---------- */
-  .community{
-    border:1px solid var(--border);border-radius:26px;overflow:hidden;
-    background:var(--card);
-  }
-  .community-head{padding:44px 40px 8px;text-align:center;}
-  .event-stats{
-    display:flex;flex-wrap:wrap;justify-content:center;gap:14px;
-    margin:26px 0 34px;
-  }
-  .event-stat{
-    background:var(--card-2);border:1px solid var(--border);border-radius:14px;
-    padding:14px 22px;min-width:150px;text-align:center;
-  }
-  .event-stat .num{display:block;font-family:'Sora',sans-serif;font-weight:800;font-size:17px;color:var(--green);}
-  .event-stat .lbl{display:block;font-size:11.5px;color:var(--text-2);margin-top:4px;font-weight:600;letter-spacing:0.02em;}
-  .community-photo{position:relative;}
-  .community-photo img{width:100%;display:block;}
-  .community-cap{
-    padding:16px 24px;text-align:center;color:var(--text-2);font-size:13px;
-    border-top:1px solid var(--border);background:var(--bg-1);
-  }
-  /* ---------- wide wall item (Brodie feature, moved into proof wall) ---------- */
-  .wall-item.wide{}
-  .wall-item.wide .wall-quote{
-    padding:14px 16px 4px;color:var(--text-1);font-size:12.5px;line-height:1.6;font-style:italic;
-    border-top:1px solid var(--border);
-  }
-  /* ---------- proof wall ---------- */
-  .wall{columns:4 260px;column-gap:16px;}
-  .wall-item{
-    break-inside:avoid;margin-bottom:16px;border-radius:16px;overflow:hidden;
-    border:1px solid var(--border);background:var(--card);
-    transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease;
-    opacity:0;transform:translateY(24px);
-  }
-  .wall-item.in{opacity:1;transform:translateY(0);}
-  .wall-item:hover{transform:translateY(-6px);border-color:var(--border-hi);box-shadow:0 16px 40px rgba(0,0,0,0.45);}
-  .wall-item img{width:100%;}
-  .wall-cap{padding:10px 14px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-  .wall-cap .name{font-size:12.5px;font-weight:700;color:var(--text-0) !important;}
-  .wall-cap .chip{
-    font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;
-    padding:4px 9px;border-radius:999px;background:rgba(61,255,150,0.1);color:var(--green);border:1px solid rgba(61,255,150,0.25);
-  }
-  /* ---------- pillars ---------- */
-  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-  .pillar{
-    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:30px 26px;
-    transition:transform .2s, border-color .2s;
-  }
-  .pillar:hover{transform:translateY(-5px);border-color:var(--border-hi);}
-  .pillar .num{
-    width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(135deg,var(--green),var(--blue));color:#03150a;font-weight:800;font-size:15px;margin-bottom:18px;
-  }
-  .pillar h3{font-size:19px;margin:0 0 10px;}
-  .pillar p{color:var(--text-1);font-size:14.5px;line-height:1.65;margin:0;}
-  /* ---------- CTA / apply ---------- */
-  .apply{
-    background:linear-gradient(180deg, rgba(61,255,150,0.07), transparent 60%), var(--bg-1);
-    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  }
-  .apply-inner{
-    max-width:760px;margin:0 auto;text-align:center;
-    background:var(--card);border:1px solid var(--border);border-radius:26px;padding:50px 34px;
-    box-shadow:var(--shadow-glow);
-  }
-  .apply h2{font-size:clamp(24px,4vw,34px);margin:14px 0 12px;}
-  .apply p{color:var(--text-1);font-size:15.5px;max-width:520px;margin:0 auto 28px;line-height:1.6;}
-  /* ---------- floating cta ---------- */
-  .float-cta{
-    position:fixed;left:50%;bottom:18px;transform:translate(-50%,120px);
-    z-index:60;transition:transform .35s ease;
-  }
-  .float-cta.show{transform:translate(-50%,0);}
-  /* ---------- footer ---------- */
-  footer{padding:36px 0 50px;text-align:center;color:var(--text-2);font-size:12.5px;border-top:1px solid var(--border);}
-  footer .flogo{font-family:'Sora',sans-serif;font-weight:800;color:var(--text-1);margin-bottom:10px;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;}
-  footer .flogo .mark{width:20px;height:20px;border-radius:6px;}
-  footer .flogo .mark img{width:100%;height:100%;border-radius:6px;display:block;}
-  .flegal{margin-top:12px;}
-  .flegal-link{
-    background:none;border:none;color:var(--text-2);font-size:12px;font-family:'Inter',sans-serif;
-    text-decoration:underline;cursor:pointer;padding:0;
-  }
-  .flegal-link:hover{color:var(--text-1);}
-  /* ---------- terms of service modal ---------- */
-  .tos-overlay{
-    position:fixed;inset:0;z-index:100;display:none;
-    background:rgba(2,4,3,0.72);backdrop-filter:blur(4px);
-    align-items:center;justify-content:center;padding:24px;
-  }
-  .tos-overlay.open{display:flex;}
-  .tos-panel{
-    position:relative;background:#0a0f0d;border:1px solid rgba(61,220,132,0.25);border-radius:18px;
-    max-width:880px;width:100%;max-height:86vh;box-shadow:0 30px 90px rgba(0,0,0,0.6);
-  }
-  .tos-scroll{max-height:86vh;overflow-y:auto;border-radius:18px;}
-  .tos-close{
-    position:absolute;top:14px;right:14px;z-index:2;
-    width:34px;height:34px;border-radius:50%;border:1px solid rgba(61,220,132,0.35);
-    background:rgba(10,15,13,0.9);color:#e6f2ec;font-size:20px;line-height:1;cursor:pointer;
-  }
-  .tos-close:hover{background:rgba(61,220,132,0.15);}
-  /* ---------- reveal utility ---------- */
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease, transform .7s ease;}
-  .reveal.in{opacity:1;transform:translateY(0);}
-  /* ---------- responsive ---------- */
-  @media (max-width: 980px){
-    .stats-grid{grid-template-columns:repeat(2,1fr);}
-    .cs-grid{grid-template-columns:repeat(2,1fr);}
-    .story{grid-template-columns:1fr;padding:32px 24px;}
-    .pillars{grid-template-columns:1fr;}
-    .wall{columns:3 200px;}
-  }
-  @media (prefers-reduced-motion: reduce){
-    html{scroll-behavior:auto;}
-    *,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;}
-    .reveal{opacity:1;transform:none;}
-  }
-  @media (max-width: 640px){
-    .blob{filter:blur(60px);opacity:0.22;}
-    .stats-grid{grid-template-columns:repeat(2,1fr);}
-    .cs-grid{grid-template-columns:1fr;}
-    .wall{columns:2 150px;}
-    .apply-inner{padding:34px 18px;}
-    .topbar .btn-sm{padding:9px 16px;font-size:12.5px;}
-    section{padding:52px 0;}
-    .hero{padding:30px 0 38px;}
-    .hero .wrap{padding:0 10px;}
-    .hero h1{font-size:clamp(26px,7.5vw,34px);line-height:1.28;margin:20px 0 16px;}
-    .hero h1 br.mob-br{display:inline;}
-    .hero p.sub{font-size:14px;line-height:1.55;margin:0 auto 26px;max-width:330px;}
-    .eyebrow{font-size:11px;padding:7px 14px;margin-bottom:4px;}
-    .video-shell{max-width:none;border-radius:14px;padding:2px;}
-  }
-</style>
+<meta name="description" content="Watch AI Creator Lab student case studies, explore community results, and apply for the creator training program.">
+<link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+<link rel="preload" as="image" href="assets/images/training-video-poster.6d880b1f4fae.webp" fetchpriority="high">
+<link rel="preload" href="assets/fonts/inter-latin.3100e775e861.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/sora-latin.811e11966d29.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://fast.vidalytics.com">
+<link rel="stylesheet" href="assets/css/styles.f782f36f338d.css">
+<script src="assets/js/main.88e5c937de5c.js" defer></script>
 </head>
 <body>
-<div class="aurora">
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-  <div class="blob b3"></div>
-  <img class="brand-watermark" src="/images/proof-01.webp" alt="" loading="lazy" decoding="async">
+<div class="aurora" aria-hidden="true">
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+<img class="brand-watermark" src="assets/images/lab-logo.3c6ba859769b.webp" alt="" width="300" height="300" fetchpriority="low" loading="eager" decoding="async">
 </div>
 <header class="topbar">
-  <div class="wrap">
-    <div class="logo"><span class="mark"><img src="/images/proof-02.webp" alt="AI Creator Lab logo" loading="lazy" decoding="async"></span> AI CREATOR LAB</div>
-    <a href="#apply" class="btn btn-primary btn-sm">Apply Now</a>
-  </div>
+<div class="wrap">
+<div class="logo"><span class="mark"><img src="assets/images/lab-logo-64.eb9b5c05f4d4.webp" alt="AI Creator Lab logo" width="300" height="300" srcset="assets/images/lab-logo-32.30afc76d8e28.webp 32w, assets/images/lab-logo-64.eb9b5c05f4d4.webp 64w" sizes="30px" loading="eager" decoding="async"></span> AI CREATOR LAB</div>
+<a href="#apply" class="btn btn-primary btn-sm">Apply Now</a>
+</div>
 </header>
 <main>
-  <!-- ================= HERO ================= -->
-  <section class="hero">
-    <div class="wrap">
-      <span class="eyebrow"><span class="dot"></span> Free Training</span>
-      <h1>How Our Students<br class="mob-br"> Turned <span>Ai Content</span><br>Into $10k to $50k+ Months</h1>
-      <p class="sub">No filming. No editing skills. No audience required. Watch how everyday people are using AI to land brand deals worth $300 to $5,000+ a month, some stacking multiple retainers at once.</p>
-      <div class="video-shell">
-        <div class="video-inner">
-          <div id="vidalytics_embed_zosa3bAhEHrS8oqy" style="width: 100%; position:relative; padding-top: 56.25%;"></div>
-        </div>
-      </div>
-      <div class="apply-hero reveal" id="apply">
-        <div class="apply-head">
-          <h3>Apply For AI Creator Lab</h3>
-          <p>Takes about 3 minutes. We review every application personally.</p>
-        </div>
-        <div id="tf-inline" data-tf-widget="QCf2H2AD" data-tf-opacity="100" data-tf-iframe-props="title=AI Creator Lab Application" data-tf-medium="snippet"></div>
-      </div>
-      <div class="trust-row">
-        <span><img class="icon-inline" src="/images/proof-03.webp" alt="" loading="lazy" decoding="async"> Real students, real screenshots</span>
-        <span><img class="icon-inline" src="/images/proof-04.webp" alt="" loading="lazy" decoding="async"> No prior experience needed</span>
-        <span><img class="icon-inline" src="/images/proof-05.webp" alt="" loading="lazy" decoding="async"> Community of 100s of active creators</span>
-      </div>
-    </div>
-  </section>
-  <!-- ================= STATS ================= -->
-  <section class="stats tight">
-    <div class="wrap">
-      <div class="stats-grid">
-        <div class="stat-card reveal">
-          <div class="stat-num" data-count="243805772">0</div>
-          <div class="stat-label">Views generated in one month by a single student</div>
-          <div class="stat-src">Facebook analytics, Ollie</div>
-        </div>
-        <div class="stat-card reveal">
-          <div class="stat-num" data-count="3000000">0</div>
-          <div class="stat-label">Followers built from scratch on one account</div>
-          <div class="stat-src">Ollie</div>
-        </div>
-        <div class="stat-card reveal">
-          <div class="stat-num" data-count="100000" data-prefix="$">0</div>
-          <div class="stat-label">Profit in a single month, 3 months after joining</div>
-          <div class="stat-src">Scott</div>
-        </div>
-        <div class="stat-card reveal">
-          <div class="stat-num" data-count="233057">0</div>
-          <div class="stat-label">New followers gained in 28 days</div>
-          <div class="stat-src">Danny</div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- ================= CASE STUDIES ================= -->
-  <section id="results">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="eyebrow">Case Studies</span>
-        <h2>This Is Working For People Just Like You</h2>
-        <p>Real students breaking down exactly what they did, on camera, no fluff.</p>
-      </div>
-      <div class="cs-grid">
-        <div class="cs-card reveal">
-          <div class="cs-thumb yt" data-yt="XTLA8CCxWDU">
-            <img src="https://img.youtube.com/vi/XTLA8CCxWDU/hqdefault.jpg" alt="" loading="lazy" decoding="async">
-            <div class="play"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="#03150a"><path d="M8 5v14l11-7z"/></svg></span></div>
-          </div>
-          <div class="cs-body"><div class="tag">Case Study</div><h4>$202k In 30 Days With AI Influencers</h4></div>
-        </div>
-        <div class="cs-card reveal">
-          <div class="cs-thumb yt" data-yt="bB5HNUv4eqI">
-            <img src="https://img.youtube.com/vi/bB5HNUv4eqI/hqdefault.jpg" alt="" loading="lazy" decoding="async">
-            <div class="play"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="#03150a"><path d="M8 5v14l11-7z"/></svg></span></div>
-          </div>
-          <div class="cs-body"><div class="tag">Case Study</div><h4>$30k In 30 Days With AI Avatars</h4></div>
-        </div>
-        <div class="cs-card reveal">
-          <div class="cs-thumb yt" data-yt="w7rTuj-2akM">
-            <img src="https://img.youtube.com/vi/w7rTuj-2akM/hqdefault.jpg" alt="" loading="lazy" decoding="async">
-            <div class="play"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="#03150a"><path d="M8 5v14l11-7z"/></svg></span></div>
-          </div>
-          <div class="cs-body"><div class="tag">Case Study</div><h4>$28k In His First Month</h4></div>
-        </div>
-        <div class="cs-card reveal">
-          <div class="cs-thumb yt" data-yt="olpCSR6EijA">
-            <img src="https://img.youtube.com/vi/olpCSR6EijA/hqdefault.jpg" alt="" loading="lazy" decoding="async">
-            <div class="play"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="#03150a"><path d="M8 5v14l11-7z"/></svg></span></div>
-          </div>
-          <div class="cs-body"><div class="tag">Case Study</div><h4>$50k Per Month, Explained</h4></div>
-        </div>
-        <div class="cs-card reveal">
-          <div class="cs-thumb yt" data-yt="q6NfbSqUvZI">
-            <img src="https://img.youtube.com/vi/q6NfbSqUvZI/hqdefault.jpg" alt="" loading="lazy" decoding="async">
-            <div class="play"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="#03150a"><path d="M8 5v14l11-7z"/></svg></span></div>
-          </div>
-          <div class="cs-body"><div class="tag">Case Study</div><h4>How To Really Make Money With AI Avatars</h4></div>
-        </div>
-        <div class="cs-card reveal">
-          <div class="cs-thumb yt" data-yt="8N1PdbCOFX8">
-            <img src="https://img.youtube.com/vi/8N1PdbCOFX8/hqdefault.jpg" alt="" loading="lazy" decoding="async">
-            <div class="play"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="#03150a"><path d="M8 5v14l11-7z"/></svg></span></div>
-          </div>
-          <div class="cs-body"><div class="tag">Case Study</div><h4>She Makes $12k a Month With AI Organic Marketing</h4></div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- ================= COMMUNITY / TEAM PHOTO ================= -->
-  <section>
-    <div class="wrap">
-      <div class="community reveal">
-        <div class="community-head">
-          <span class="eyebrow"><img class="icon-inline" src="/images/proof-06.webp" alt="" loading="lazy" decoding="async"> In Person Events</span>
-          <h2>In Person Team Events</h2>
-          <p style="color:var(--text-1);max-width:640px;margin:14px auto 0;">We throw an in person creator event once per quarter, bringing our founders, team, and most active students together face to face. This is from our most recent meetup.</p>
-          <div class="event-stats">
-            <div class="event-stat"><span class="num">4x</span><span class="lbl">Per Year</span></div>
-            <div class="event-stat"><span class="num">Founders + Team</span><span class="lbl">Always In Attendance</span></div>
-            <div class="event-stat"><span class="num">All Skill Levels</span><span class="lbl">Beginners Welcome</span></div>
-          </div>
-        </div>
-        <div class="community-photo">
-          <img src="/images/proof-07.webp" alt="AI Creator Lab founders, team, and students at a community meetup" loading="lazy" decoding="async">
-        </div>
-        <div class="community-cap">AI Creator Lab founders, team, and students at a recent in-person meetup.</div>
-      </div>
-    </div>
-  </section>
-  <!-- ================= PROOF WALL ================= -->
-  <section id="proof">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="eyebrow">Straight From The Community</span>
-        <h2>Some Of Our Success Stories</h2>
-        <p>These aren't stock testimonials. This is our students posting their own wins, in real time, to each other.</p>
-      </div>
-      <div class="wall">
-        <div class="wall-item"><img src="/images/proof-08.webp" alt="Ollie Facebook views screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Ollie</span><span class="chip">Facebook</span></div></div>
-        <div class="wall-item"><img src="/images/proof-09.webp" alt="Scott monthly views and accounts reached screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Scott</span><span class="chip">Reach</span></div></div>
-        <div class="wall-item"><img src="/images/proof-10.webp" alt="jackrcampbell 11 million views screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Jack</span><span class="chip">11M Views</span></div></div>
-        <div class="wall-item wide">
-          <img src="/images/proof-11.webp" alt="Brodie testimonial screenshot" loading="lazy" decoding="async">
-          <div class="wall-cap"><span class="name">Brodie</span><span class="chip">Full Story</span></div>
-        </div>
-        <div class="wall-item"><img src="/images/proof-12.webp" alt="Scott negative bank balance to six figure month screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Scott</span><span class="chip">Full Journey</span></div></div>
-        <div class="wall-item"><img src="/images/proof-13.webp" alt="Paige first retainer screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Paige</span><span class="chip">First Deal</span></div></div>
-        <div class="wall-item"><img src="/images/proof-14.webp" alt="Leo first brand deal screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Leo</span><span class="chip">First Deal</span></div></div>
-        <div class="wall-item"><img src="/images/proof-15.webp" alt="Brodie 2000 dollar deal screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Brodie</span><span class="chip">$2k Deal</span></div></div>
-        <div class="wall-item"><img src="/images/proof-16.webp" alt="Danny 23 million views analytics screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Danny</span><span class="chip">23M Views</span></div></div>
-        <div class="wall-item"><img src="/images/proof-17.webp" alt="Teko bonus payout screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Teko</span><span class="chip">Bonus</span></div></div>
-        <div class="wall-item"><img src="/images/proof-18.webp" alt="NathanR follower growth screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Nathan</span><span class="chip">Growth</span></div></div>
-        <div class="wall-item"><img src="/images/proof-19.webp" alt="Emily commission payout screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Emily</span><span class="chip">$70,675 Payout</span></div></div>
-        <div class="wall-item"><img src="/images/proof-14.webp" alt="Ziyad new AI avatar views screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Ziyad</span><span class="chip">New Avatar</span></div></div>
-        <div class="wall-item"><img src="/images/final-02.webp" alt="Michael 1 million followers screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Michael</span><span class="chip">1M Followers</span></div></div>
-        <div class="wall-item"><img src="/images/final-03.webp" alt="Michael 30k month with retainers screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Michael</span><span class="chip">$30k Month</span></div></div>
-        <div class="wall-item"><img src="/images/proof-07.webp" alt="Michael family vacation to Mallorca photos" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Michael</span><span class="chip">Family Trip</span></div></div>
-        <div class="wall-item"><img src="/images/proof-07.webp" alt="Tash bonus payout screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Tash</span><span class="chip">Bonus</span></div></div>
-        <div class="wall-item"><img src="/images/final-04.webp" alt="James earnings screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Mr Robert</span><span class="chip">First $10k Month</span></div></div>
-        <div class="wall-item"><img src="/images/proof-07.webp" alt="Hayden bonus payout screenshot" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Hayden</span><span class="chip">$26,850 Bonus</span></div></div>
-      </div>
-    </div>
-  </section>
-  <!-- ================= PILLARS / WHAT YOU GET ================= -->
-  <section id="inside">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="eyebrow">Inside AI Creator Lab</span>
-        <h2>What Actually Happens After You Join</h2>
-        <p>Three phases. No guesswork, no doing it alone.</p>
-      </div>
-      <div class="pillars">
-        <div class="pillar reveal">
-          <div class="num">01</div>
-          <h3>Learning &amp; Creator Skillset</h3>
-          <p>Step by step training on building AI generated content that actually performs, from your first post to a repeatable system.</p>
-        </div>
-        <div class="pillar reveal">
-          <div class="num">02</div>
-          <h3>Monetization Via Brand Deals</h3>
-          <p>Access to real brand relationships worth $200 to $2,000+ in monthly retainers, plus performance commissions on top.</p>
-        </div>
-        <div class="pillar reveal">
-          <div class="num">03</div>
-          <h3>Accountability &amp; Community</h3>
-          <p>Weekly live coaching calls, video reviews, and a private group of students who are actually doing this, not just talking about it.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- ================= CLOSING CTA ================= -->
-  <section class="apply">
-    <div class="wrap">
-      <div class="apply-inner reveal">
-        <span class="eyebrow"><img class="icon-inline" src="/images/lab-logo.webp" alt="" loading="lazy" decoding="async"> Apply Now</span>
-        <h2>See If You Qualify For AI Creator Lab</h2>
-        <p>We only bring on a limited number of new students at a time so our team can actually support everyone in it. Scroll back up and fill out the short application, it only takes about 3 minutes.</p>
-        <a href="#apply" class="btn btn-primary">Apply For AI Creator Lab</a>
-      </div>
-    </div>
-  </section>
+<section class="hero">
+<div class="wrap">
+<span class="eyebrow"><span class="dot"></span> Free Training</span>
+<h1>How Our Students<br class="mob-br"> Turned <span>Ai Content</span><br>Into $10k to $50k+ Months</h1>
+<p class="sub">No filming. No editing skills. No audience required. Watch how everyday people are using AI to land brand deals worth $300 to $5,000+ a month, some stacking multiple retainers at once.</p>
+<div class="video-shell">
+<div class="video-inner">
+<div id="vidalytics_embed_zosa3bAhEHrS8oqy" class="layout-1"></div><img id="heroPoster" class="hero-poster" src="assets/images/training-video-poster.6d880b1f4fae.webp" alt="" aria-hidden="true" width="690" height="388" loading="eager" fetchpriority="high" decoding="async">
+<div id="videoFallback" class="video-fallback" hidden><p>The video couldn’t load.</p><button id="videoRetry" class="btn btn-primary btn-sm" type="button">Try again</button></div>
+<noscript><div class="video-fallback"><p>Enable JavaScript to watch the training video.</p></div></noscript>
+</div>
+</div>
+<div class="apply-hero" id="apply">
+<div class="apply-head">
+<h3>Apply For AI Creator Lab</h3>
+<p>Takes about 3 minutes. We review every application personally.</p>
+</div>
+<div id="tf-inline" data-tf-widget="QCf2H2AD" data-tf-opacity="100" data-tf-iframe-props="title=AI Creator Lab Application" data-tf-medium="snippet"><span id="formStatus" class="form-status">Loading application…</span></div>
+<p class="form-direct"><a id="formDirectLink" href="https://form.typeform.com/to/QCf2H2AD" target="_blank" rel="noopener">Open application in a new tab</a></p>
+</div>
+<div class="trust-row">
+<span><img class="icon-inline" src="assets/images/lab-logo-64.eb9b5c05f4d4.webp" alt="" width="300" height="300" srcset="assets/images/lab-logo-32.30afc76d8e28.webp 32w, assets/images/lab-logo-64.eb9b5c05f4d4.webp 64w" sizes="14px" loading="lazy" decoding="async"> Real students, real screenshots</span>
+<span><img class="icon-inline" src="assets/images/lab-logo-64.eb9b5c05f4d4.webp" alt="" width="300" height="300" srcset="assets/images/lab-logo-32.30afc76d8e28.webp 32w, assets/images/lab-logo-64.eb9b5c05f4d4.webp 64w" sizes="14px" loading="lazy" decoding="async"> No prior experience needed</span>
+<span><img class="icon-inline" src="assets/images/lab-logo-64.eb9b5c05f4d4.webp" alt="" width="300" height="300" srcset="assets/images/lab-logo-32.30afc76d8e28.webp 32w, assets/images/lab-logo-64.eb9b5c05f4d4.webp 64w" sizes="14px" loading="lazy" decoding="async"> Community of 100s of active creators</span>
+</div>
+</div>
+</section>
+<section class="stats tight">
+<div class="wrap">
+<div class="stats-grid">
+<div class="stat-card reveal">
+<div class="stat-num" data-count="243805772">243,805,772</div>
+<div class="stat-label">Views generated in one month by a single student</div>
+<div class="stat-src">Facebook analytics, Ollie</div>
+</div>
+<div class="stat-card reveal">
+<div class="stat-num" data-count="3000000">3,000,000</div>
+<div class="stat-label">Followers built from scratch on one account</div>
+<div class="stat-src">Ollie</div>
+</div>
+<div class="stat-card reveal">
+<div class="stat-num" data-count="100000" data-prefix="$">$100,000</div>
+<div class="stat-label">Profit in a single month, 3 months after joining</div>
+<div class="stat-src">Scott</div>
+</div>
+<div class="stat-card reveal">
+<div class="stat-num" data-count="233057">233,057</div>
+<div class="stat-label">New followers gained in 28 days</div>
+<div class="stat-src">Danny</div>
+</div>
+</div>
+</div>
+</section>
+<section id="results">
+<div class="wrap">
+<div class="sec-head reveal">
+<span class="eyebrow">Case Studies</span>
+<h2>This Is Working For People Just Like You</h2>
+<p>Real students breaking down exactly what they did, on camera, no fluff.</p>
+</div>
+<div class="cs-grid">
+<div class="cs-card reveal">
+<div class="cs-thumb yt" data-yt="XTLA8CCxWDU">
+<img src="assets/images/case-study-XTLA8CCxWDU.5376bf5c2b32.webp" alt="" width="480" height="360" loading="lazy" decoding="async">
+<button class="play" type="button" aria-label="Play: $202k In 30 Days With AI Influencers"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="#03150a"><path d="M8 5v14l11-7z"/></svg></span></button>
+</div>
+<div class="cs-body"><div class="tag">Case Study</div><h4>$202k In 30 Days With AI Influencers</h4></div>
+</div>
+<div class="cs-card reveal">
+<div class="cs-thumb yt" data-yt="bB5HNUv4eqI">
+<img src="assets/images/case-study-bB5HNUv4eqI.d67c74c821b8.jpg" alt="" width="480" height="360" loading="lazy" decoding="async">
+<button class="play" type="button" aria-label="Play: $30k In 30 Days With AI Avatars"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="#03150a"><path d="M8 5v14l11-7z"/></svg></span></button>
+</div>
+<div class="cs-body"><div class="tag">Case Study</div><h4>$30k In 30 Days With AI Avatars</h4></div>
+</div>
+<div class="cs-card reveal">
+<div class="cs-thumb yt" data-yt="w7rTuj-2akM">
+<img src="assets/images/case-study-w7rTuj-2akM.061ac5fa23a0.webp" alt="" width="480" height="360" loading="lazy" decoding="async">
+<button class="play" type="button" aria-label="Play: $28k In His First Month"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="#03150a"><path d="M8 5v14l11-7z"/></svg></span></button>
+</div>
+<div class="cs-body"><div class="tag">Case Study</div><h4>$28k In His First Month</h4></div>
+</div>
+<div class="cs-card reveal">
+<div class="cs-thumb yt" data-yt="olpCSR6EijA">
+<img src="assets/images/case-study-olpCSR6EijA.14d47dfeb7ca.webp" alt="" width="480" height="360" loading="lazy" decoding="async">
+<button class="play" type="button" aria-label="Play: $50k Per Month, Explained"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="#03150a"><path d="M8 5v14l11-7z"/></svg></span></button>
+</div>
+<div class="cs-body"><div class="tag">Case Study</div><h4>$50k Per Month, Explained</h4></div>
+</div>
+<div class="cs-card reveal">
+<div class="cs-thumb yt" data-yt="q6NfbSqUvZI">
+<img src="assets/images/case-study-q6NfbSqUvZI.32e0ae2adcc2.jpg" alt="" width="480" height="360" loading="lazy" decoding="async">
+<button class="play" type="button" aria-label="Play: How To Really Make Money With AI Avatars"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="#03150a"><path d="M8 5v14l11-7z"/></svg></span></button>
+</div>
+<div class="cs-body"><div class="tag">Case Study</div><h4>How To Really Make Money With AI Avatars</h4></div>
+</div>
+<div class="cs-card reveal">
+<div class="cs-thumb yt" data-yt="8N1PdbCOFX8">
+<img src="assets/images/case-study-8N1PdbCOFX8.6186f9b54f81.jpg" alt="" width="480" height="360" loading="lazy" decoding="async">
+<button class="play" type="button" aria-label="Play: She Makes $12k a Month With AI Organic Marketing"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="#03150a"><path d="M8 5v14l11-7z"/></svg></span></button>
+</div>
+<div class="cs-body"><div class="tag">Case Study</div><h4>She Makes $12k a Month With AI Organic Marketing</h4></div>
+</div>
+</div>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="community reveal">
+<div class="community-head">
+<span class="eyebrow"><img class="icon-inline" src="assets/images/lab-logo-64.eb9b5c05f4d4.webp" alt="" width="300" height="300" srcset="assets/images/lab-logo-32.30afc76d8e28.webp 32w, assets/images/lab-logo-64.eb9b5c05f4d4.webp 64w" sizes="14px" loading="lazy" decoding="async"> In Person Events</span>
+<h2>In Person Team Events</h2>
+<p class="layout-2">We throw an in person creator event once per quarter, bringing our founders, team, and most active students together face to face. This is from our most recent meetup.</p>
+<div class="event-stats">
+<div class="event-stat"><span class="num">4x</span><span class="lbl">Per Year</span></div>
+<div class="event-stat"><span class="num">Founders + Team</span><span class="lbl">Always In Attendance</span></div>
+<div class="event-stat"><span class="num">All Skill Levels</span><span class="lbl">Beginners Welcome</span></div>
+</div>
+</div>
+<div class="community-photo">
+<img src="assets/images/community-meetup-960.2e387ef16b0a.webp" alt="AI Creator Lab founders, team, and students at a community meetup" width="1600" height="1069" srcset="assets/images/community-meetup-640.0ad109630b53.webp 640w, assets/images/community-meetup-960.2e387ef16b0a.webp 960w, assets/images/community-meetup.6c6e478367fb.webp 1600w" sizes="(max-width: 1180px) calc(100vw - 48px), 1132px" loading="lazy" decoding="async">
+</div>
+<div class="community-cap">AI Creator Lab founders, team, and students at a recent in-person meetup.</div>
+</div>
+</div>
+</section>
+<section id="proof">
+<div class="wrap">
+<div class="sec-head reveal">
+<span class="eyebrow">Straight From The Community</span>
+<h2>Some Of Our Success Stories</h2>
+<p>These aren't stock testimonials. This is our students posting their own wins, in real time, to each other.</p>
+</div>
+<div class="wall">
+<div class="wall-item"><img src="assets/images/ollie-facebook-views-screenshot-480.f1aba31742f5.webp" alt="Ollie Facebook views screenshot" width="654" height="670" srcset="assets/images/ollie-facebook-views-screenshot-320.e2eabb009e25.webp 320w, assets/images/ollie-facebook-views-screenshot-480.f1aba31742f5.webp 480w, assets/images/ollie-facebook-views-screenshot.92692c2ee743.webp 654w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Ollie</span><span class="chip">Facebook</span></div></div>
+<div class="wall-item"><img src="assets/images/scott-monthly-views-and-accounts-reached-screenshot-480.332830e92667.webp" alt="Scott monthly views and accounts reached screenshot" width="791" height="821" srcset="assets/images/scott-monthly-views-and-accounts-reached-screenshot-320.02600600a071.webp 320w, assets/images/scott-monthly-views-and-accounts-reached-screenshot-480.332830e92667.webp 480w, assets/images/scott-monthly-views-and-accounts-reached-screenshot.1059b3a1e6f1.webp 791w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Scott</span><span class="chip">Reach</span></div></div>
+<div class="wall-item"><img src="assets/images/jackrcampbell-11-million-views-screenshot-480.deb4ee68ce56.webp" alt="jackrcampbell 11 million views screenshot" width="562" height="356" srcset="assets/images/jackrcampbell-11-million-views-screenshot-320.9d2624f38cec.webp 320w, assets/images/jackrcampbell-11-million-views-screenshot-480.deb4ee68ce56.webp 480w, assets/images/jackrcampbell-11-million-views-screenshot.691bf9e2c51d.webp 562w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Jack</span><span class="chip">11M Views</span></div></div>
+<div class="wall-item wide">
+<img src="assets/images/brodie-testimonial-screenshot-480.7e59836497b8.webp" alt="Brodie testimonial screenshot" width="900" height="757" srcset="assets/images/brodie-testimonial-screenshot-320.ff6a77360365.webp 320w, assets/images/brodie-testimonial-screenshot-480.7e59836497b8.webp 480w, assets/images/brodie-testimonial-screenshot.a0d0808a23b7.webp 900w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async">
+<div class="wall-cap"><span class="name">Brodie</span><span class="chip">Full Story</span></div>
+</div>
+<div class="wall-item"><img src="assets/images/scott-negative-bank-balance-to-six-figure-month-screenshot-480.2d62a32fb95f.webp" alt="Scott negative bank balance to six figure month screenshot" width="900" height="425" srcset="assets/images/scott-negative-bank-balance-to-six-figure-month-screenshot-320.9da8ed99046c.webp 320w, assets/images/scott-negative-bank-balance-to-six-figure-month-screenshot-480.2d62a32fb95f.webp 480w, assets/images/scott-negative-bank-balance-to-six-figure-month-screenshot.3506b26d2041.webp 900w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Scott</span><span class="chip">Full Journey</span></div></div>
+<div class="wall-item"><img src="assets/images/paige-first-retainer-screenshot-480.6a4f7b8e13e5.webp" alt="Paige first retainer screenshot" width="861" height="325" srcset="assets/images/paige-first-retainer-screenshot-320.c6a551a7c3bc.webp 320w, assets/images/paige-first-retainer-screenshot-480.6a4f7b8e13e5.webp 480w, assets/images/paige-first-retainer-screenshot.b31da0ddcf50.webp 861w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Paige</span><span class="chip">First Deal</span></div></div>
+<div class="wall-item"><img src="assets/images/leo-first-brand-deal-screenshot-480.f7affa002673.webp" alt="Leo first brand deal screenshot" width="864" height="246" srcset="assets/images/leo-first-brand-deal-screenshot-320.e88e6dbea6f9.webp 320w, assets/images/leo-first-brand-deal-screenshot-480.f7affa002673.webp 480w, assets/images/leo-first-brand-deal-screenshot.c4daaaca184a.webp 864w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Leo</span><span class="chip">First Deal</span></div></div>
+<div class="wall-item"><img src="assets/images/brodie-2000-dollar-deal-screenshot-480.094f4e2c8ccf.webp" alt="Brodie 2000 dollar deal screenshot" width="643" height="161" srcset="assets/images/brodie-2000-dollar-deal-screenshot-320.46957bc07c9d.webp 320w, assets/images/brodie-2000-dollar-deal-screenshot-480.094f4e2c8ccf.webp 480w, assets/images/brodie-2000-dollar-deal-screenshot.285713482f29.webp 643w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Brodie</span><span class="chip">$2k Deal</span></div></div>
+<div class="wall-item"><img src="assets/images/danny-23-million-views-analytics-screenshot-480.192aa62ca02e.webp" alt="Danny 23 million views analytics screenshot" width="730" height="610" srcset="assets/images/danny-23-million-views-analytics-screenshot-320.c1a0987558cd.webp 320w, assets/images/danny-23-million-views-analytics-screenshot-480.192aa62ca02e.webp 480w, assets/images/danny-23-million-views-analytics-screenshot.5c5243ecfe22.webp 730w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Danny</span><span class="chip">23M Views</span></div></div>
+<div class="wall-item"><img src="assets/images/teko-bonus-payout-screenshot-480.88fc408bf5bc.webp" alt="Teko bonus payout screenshot" width="482" height="313" srcset="assets/images/teko-bonus-payout-screenshot-320.3d86c42b1c99.webp 320w, assets/images/teko-bonus-payout-screenshot-480.88fc408bf5bc.webp 480w, assets/images/teko-bonus-payout-screenshot.719e1bb1a4dd.webp 482w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Teko</span><span class="chip">Bonus</span></div></div>
+<div class="wall-item"><img src="assets/images/nathanr-follower-growth-screenshot-480.02409be28a21.webp" alt="NathanR follower growth screenshot" width="648" height="638" srcset="assets/images/nathanr-follower-growth-screenshot-320.875d3c69792a.webp 320w, assets/images/nathanr-follower-growth-screenshot-480.02409be28a21.webp 480w, assets/images/nathanr-follower-growth-screenshot.17b2a13a6dff.webp 648w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Nathan</span><span class="chip">Growth</span></div></div>
+<div class="wall-item"><img src="assets/images/emily-commission-payout-screenshot.f2e6377ad0cf.webp" alt="Emily commission payout screenshot" width="333" height="163" srcset="assets/images/emily-commission-payout-screenshot-320.8c3874b93c2e.webp 320w, assets/images/emily-commission-payout-screenshot.f2e6377ad0cf.webp 333w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Emily</span><span class="chip">$70,675 Payout</span></div></div>
+<div class="wall-item"><img src="assets/images/ziyad-new-ai-avatar-views-screenshot-480.fede0af7be19.webp" alt="Ziyad new AI avatar views screenshot" width="823" height="288" srcset="assets/images/ziyad-new-ai-avatar-views-screenshot-320.a9a5587a9377.webp 320w, assets/images/ziyad-new-ai-avatar-views-screenshot-480.fede0af7be19.webp 480w, assets/images/ziyad-new-ai-avatar-views-screenshot.205f96543ed5.webp 823w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Ziyad</span><span class="chip">New Avatar</span></div></div>
+<div class="wall-item"><img src="assets/images/michael-1-million-followers-screenshot-480.81f7725e2444.webp" alt="Michael 1 million followers screenshot" width="715" height="425" srcset="assets/images/michael-1-million-followers-screenshot-320.df2d5f12bab8.webp 320w, assets/images/michael-1-million-followers-screenshot-480.81f7725e2444.webp 480w, assets/images/michael-1-million-followers-screenshot.a580a821aa2c.webp 715w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Michael</span><span class="chip">1M Followers</span></div></div>
+<div class="wall-item"><img src="assets/images/michael-30k-month-with-retainers-screenshot-480.8f63579e3812.webp" alt="Michael 30k month with retainers screenshot" width="818" height="502" srcset="assets/images/michael-30k-month-with-retainers-screenshot-320.1adea68beb09.webp 320w, assets/images/michael-30k-month-with-retainers-screenshot-480.8f63579e3812.webp 480w, assets/images/michael-30k-month-with-retainers-screenshot.189cf209aa1e.webp 818w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Michael</span><span class="chip">$30k Month</span></div></div>
+<div class="wall-item"><img src="assets/images/michael-family-vacation-to-mallorca-photos-480.179530eef2b6.webp" alt="Michael family vacation to Mallorca photos" width="900" height="635" srcset="assets/images/michael-family-vacation-to-mallorca-photos-320.a14cebcf1dc8.webp 320w, assets/images/michael-family-vacation-to-mallorca-photos-480.179530eef2b6.webp 480w, assets/images/michael-family-vacation-to-mallorca-photos.c7c3c6bb05e7.webp 900w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Michael</span><span class="chip">Family Trip</span></div></div>
+<div class="wall-item"><img src="assets/images/tash-bonus-payout-screenshot-480.71dff2a54742.webp" alt="Tash bonus payout screenshot" width="789" height="704" srcset="assets/images/tash-bonus-payout-screenshot-320.f22dc61403c3.webp 320w, assets/images/tash-bonus-payout-screenshot-480.71dff2a54742.webp 480w, assets/images/tash-bonus-payout-screenshot.75384ad07aec.webp 789w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Tash</span><span class="chip">Bonus</span></div></div>
+<div class="wall-item"><img src="assets/images/mr-robert-first-10k-month-screenshot-480.7e04f9e0fab1.webp" alt="Mr Robert first 10k month screenshot" width="900" height="545" srcset="assets/images/mr-robert-first-10k-month-screenshot-320.670d2bee4548.webp 320w, assets/images/mr-robert-first-10k-month-screenshot-480.7e04f9e0fab1.webp 480w, assets/images/mr-robert-first-10k-month-screenshot.22b82cbb1ec9.webp 900w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Mr Robert</span><span class="chip">First $10k Month</span></div></div>
+<div class="wall-item"><img src="assets/images/hayden-bonus-payout-screenshot-480.dd9ea69fc8eb.webp" alt="Hayden bonus payout screenshot" width="900" height="245" srcset="assets/images/hayden-bonus-payout-screenshot-320.03a2671c132b.webp 320w, assets/images/hayden-bonus-payout-screenshot-480.dd9ea69fc8eb.webp 480w, assets/images/hayden-bonus-payout-screenshot.815335cb246d.webp 900w" sizes="(max-width: 363px) calc(100vw - 50px), (max-width: 679px) calc((100vw - 64px) / 2), (max-width: 1135px) calc((100vw - 80px) / 3), 271px" loading="lazy" decoding="async"><div class="wall-cap"><span class="name">Hayden</span><span class="chip">$26,850 Bonus</span></div></div>
+</div>
+</div>
+</section>
+<section id="inside">
+<div class="wrap">
+<div class="sec-head reveal">
+<span class="eyebrow">Inside AI Creator Lab</span>
+<h2>What Actually Happens After You Join</h2>
+<p>Three phases. No guesswork, no doing it alone.</p>
+</div>
+<div class="pillars">
+<div class="pillar reveal">
+<div class="num">01</div>
+<h3>Learning &amp; Creator Skillset</h3>
+<p>Step by step training on building AI generated content that actually performs, from your first post to a repeatable system.</p>
+</div>
+<div class="pillar reveal">
+<div class="num">02</div>
+<h3>Monetization Via Brand Deals</h3>
+<p>Access to real brand relationships worth $200 to $2,000+ in monthly retainers, plus performance commissions on top.</p>
+</div>
+<div class="pillar reveal">
+<div class="num">03</div>
+<h3>Accountability &amp; Community</h3>
+<p>Weekly live coaching calls, video reviews, and a private group of students who are actually doing this, not just talking about it.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="apply">
+<div class="wrap">
+<div class="apply-inner reveal">
+<span class="eyebrow"><img class="icon-inline" src="assets/images/lab-logo-64.eb9b5c05f4d4.webp" alt="" width="300" height="300" srcset="assets/images/lab-logo-32.30afc76d8e28.webp 32w, assets/images/lab-logo-64.eb9b5c05f4d4.webp 64w" sizes="14px" loading="lazy" decoding="async"> Apply Now</span>
+<h2>See If You Qualify For AI Creator Lab</h2>
+<p>We only bring on a limited number of new students at a time so our team can actually support everyone in it. Scroll back up and fill out the short application, it only takes about 3 minutes.</p>
+<a href="#apply" class="btn btn-primary">Apply For AI Creator Lab</a>
+</div>
+</div>
+</section>
 </main>
 <footer>
-  <div class="wrap">
-    <div class="flogo"><span class="mark"><img src="/images/lab-logo.webp" alt="" loading="lazy" decoding="async"></span> AI CREATOR LAB</div>
-    <div>&copy; <span id="yr"></span> AI Creator Lab. All rights reserved.</div>
-    <div class="flegal"><button type="button" id="tosOpenBtn" class="flegal-link">Terms of Service</button></div>
-  </div>
+<div class="wrap">
+<div class="flogo"><span class="mark"><img src="assets/images/lab-logo-64.eb9b5c05f4d4.webp" alt="" width="300" height="300" srcset="assets/images/lab-logo-32.30afc76d8e28.webp 32w, assets/images/lab-logo-64.eb9b5c05f4d4.webp 64w" sizes="20px" loading="lazy" decoding="async"></span> AI CREATOR LAB</div>
+<div>&copy; <span id="yr">2026</span> AI Creator Lab. All rights reserved.</div>
+<div class="flegal"><button type="button" id="tosOpenBtn" aria-controls="tosOverlay" aria-expanded="false" class="flegal-link">Terms of Service</button></div>
+</div>
 </footer>
-<div class="tos-overlay" id="tosOverlay">
-  <div class="tos-panel">
-    <button type="button" id="tosCloseBtn" class="tos-close" aria-label="Close">&times;</button>
-    <div class="tos-scroll">
-      <div id="aicl-tos-page" style="background:#0a0f0d;color:#e6f2ec;font-family:'Inter',Arial,sans-serif;padding:60px 20px;line-height:1.6;">
-      <style>
-        #aicl-tos-page a { color:#3ddc84; text-decoration:underline; }
-        #aicl-tos-page h1 { color:#3ddc84; font-size:32px; margin-bottom:6px; }
-        #aicl-tos-page h2 { color:#3ddc84; font-size:20px; margin-top:38px; margin-bottom:10px; border-bottom:1px solid rgba(61,220,132,0.25); padding-bottom:6px; }
-        #aicl-tos-page p, #aicl-tos-page li { color:#c9d8d1; font-size:15px; }
-        #aicl-tos-page ul { padding-left:22px; }
-        #aicl-tos-page .updated { color:#8fa79c; font-size:13px; margin-bottom:30px; }
-        #aicl-tos-page .wrap { max-width:820px; margin:0 auto; }
-        #aicl-tos-page .callout { background:rgba(61,220,132,0.08); border:1px solid rgba(61,220,132,0.3); border-radius:10px; padding:16px 20px; margin:16px 0; }
-        #aicl-tos-page strong { color:#e6f2ec; }
-      </style>
-      <div class="wrap">
-        <h1>Terms of Service</h1>
-        <p class="updated">Last updated: September 1, 2026 &nbsp;|&nbsp; Effective for all purchases and use of aicreatorlab.io</p>
-        <p>These Terms of Service ("Terms") govern your access to and use of AI Creator Lab, including our website (aicreatorlab.io), coaching program, community, and related materials (collectively, the "Program"). The Program is operated by <strong>AI Creator Lab</strong> ("AICL," "we," "us," or "our"). By enrolling in the Program, purchasing anything from us, or using our website, you agree to these Terms. If you do not agree, do not enroll or use the site.</p>
-        <h2>1. Eligibility</h2>
-        <p>You must be at least 18 years old to enroll in the Program. By enrolling, you represent that you meet this requirement and have the legal capacity to enter into this agreement.</p>
-        <h2>2. The Program</h2>
-        <p>AICL provides education and training on creating and monetizing AI-generated content, along with community access and group coaching support. The Program includes:</p>
-        <ul>
-          <li>Video training content on AI content creation</li>
-          <li>Access to a private community and weekly group coaching calls, Q&amp;A, and content reviews</li>
-          <li>Guidance and resources related to securing brand partnerships</li>
-        </ul>
-        <div class="callout">
-          <p><strong>The Program does not include 1-on-1 coaching.</strong> All coaching, calls, and support are delivered in a group format. We do not guarantee individual attention, personalized strategy sessions, or dedicated one-on-one time with any coach or founder.</p>
-        </div>
-        <h2>3. No Guarantee of Income or Results</h2>
-        <p>Any income figures, earnings examples, student results, or testimonials referenced on our website, in our marketing, or during sales calls are illustrative and exceptional, not typical. Your results will depend on your own effort, skill, market conditions, and factors outside our control. <strong>We make no guarantee, express or implied, that you will earn any specific amount of money or achieve any particular result from participating in the Program.</strong> Brand deals, retainers, and commissions referenced in our marketing depend on third-party brands and are not owed or guaranteed by AICL.</p>
-        <h2>4. Payment</h2>
-        <p>The Program is offered for a one-time investment or, where available, an approved payment plan disclosed to you before purchase. All prices are in U.S. Dollars unless otherwise stated. By providing payment information, you authorize us (or our payment processor) to charge the agreed amount, including any scheduled installments under a payment plan. You are responsible for all payments due under a payment plan regardless of your participation level or results.</p>
-        <h2>5. Refund Policy</h2>
-        <div class="callout">
-          <p><strong>[CONFIRM EXACT TERMS BEFORE PUBLISHING]</strong> Based on what you told me: a conditional refund window applies. Suggested draft language below, adjust the day count and conditions to match what you actually enforce:</p>
-        </div>
-        <p>You may request a refund within <strong>[14 / 30] days</strong> of your enrollment date, provided that you have:</p>
-        <ul>
-          <li>Attended [X] live coaching call(s) or watched [X]% of the core training modules, and</li>
-          <li>Submitted proof of completed action steps as outlined in onboarding (e.g., [specific deliverables]), and</li>
-          <li>Requested the refund in writing to team@aicreatorlab.io within the window above</li>
-        </ul>
-        <p>Refund requests that do not meet these conditions, or that are submitted after the window closes, will not be honored. Approved refunds are issued to the original payment method within [X] business days. If you are on a payment plan, any refund does not relieve you of amounts already due for installments processed before your request, except as required by the conditions above.</p>
-        <h2>6. Community Conduct</h2>
-        <p>Members of the private community agree to act professionally and in good faith. We reserve the right to remove any member from the community, without refund, for harassment, abusive behavior, sharing or reselling Program materials without authorization, or conduct that we determine, in our sole discretion, is harmful to other members or to AICL.</p>
-        <h2>7. Intellectual Property</h2>
-        <p>All training materials, videos, templates, scripts, and other content provided through the Program are the property of AICL and are licensed to you for personal, non-commercial use only. You may not copy, resell, distribute, or publicly share Program materials without our prior written consent.</p>
-        <h2>8. Third-Party Brands and Platforms</h2>
-        <p>AICL facilitates access to a brand portfolio and platform relationships (e.g., Amazon, TikTok, Instagram, Facebook) but does not control these third parties. We are not responsible for changes to their policies, payouts, commission structures, or availability, and we do not guarantee that any specific brand deal will be offered to you or that any deal will remain available for any period of time.</p>
-        <h2>9. Limitation of Liability</h2>
-        <p>To the maximum extent permitted by law, AICL and its founders, employees, and contractors will not be liable for any indirect, incidental, special, or consequential damages, or for any loss of income or profits, arising from your participation in the Program or use of our website. Our total liability for any claim relating to the Program is limited to the amount you actually paid to AICL in the twelve (12) months preceding the claim.</p>
-        <h2>10. Disclaimer of Warranties</h2>
-        <p>The Program and website are provided "as is" and "as available," without warranties of any kind, express or implied, including implied warranties of merchantability or fitness for a particular purpose.</p>
-        <h2>11. Governing Law and Disputes</h2>
-        <p>These Terms are governed by the laws of the State of Montana, without regard to conflict-of-law principles. Any dispute arising from these Terms or the Program will be resolved exclusively in the state or federal courts located in Montana, and you consent to the personal jurisdiction of those courts.</p>
-        <h2>12. Changes to These Terms</h2>
-        <p>We may update these Terms from time to time. Continued use of the website or participation in the Program after changes are posted constitutes your acceptance of the updated Terms.</p>
-        <h2>13. Contact</h2>
-        <p>Questions about these Terms can be sent to team@aicreatorlab.io.</p>
-      </div>
-      </div>
-    </div>
-  </div>
+<div class="tos-overlay" id="tosOverlay" role="dialog" aria-modal="true" aria-label="Terms of Service" aria-hidden="true">
+<div class="tos-panel">
+<button type="button" id="tosCloseBtn" class="tos-close" aria-label="Close">&times;</button>
+<div class="tos-scroll">
+<div id="aicl-tos-page" class="layout-3">
+<div class="wrap">
+<h1>Terms of Service</h1>
+<p class="updated">Last updated: September 1, 2026 &nbsp;|&nbsp; Effective for all purchases and use of aicreatorlab.io</p>
+<p>These Terms of Service ("Terms") govern your access to and use of AI Creator Lab, including our website (aicreatorlab.io), coaching program, community, and related materials (collectively, the "Program"). The Program is operated by <strong>AI Creator Lab</strong> ("AICL," "we," "us," or "our"). By enrolling in the Program, purchasing anything from us, or using our website, you agree to these Terms. If you do not agree, do not enroll or use the site.</p>
+<h2>1. Eligibility</h2>
+<p>You must be at least 18 years old to enroll in the Program. By enrolling, you represent that you meet this requirement and have the legal capacity to enter into this agreement.</p>
+<h2>2. The Program</h2>
+<p>AICL provides education and training on creating and monetizing AI-generated content, along with community access and group coaching support. The Program includes:</p>
+<ul>
+<li>Video training content on AI content creation</li>
+<li>Access to a private community and weekly group coaching calls, Q&amp;A, and content reviews</li>
+<li>Guidance and resources related to securing brand partnerships</li>
+</ul>
+<div class="callout">
+<p><strong>The Program does not include 1-on-1 coaching.</strong> All coaching, calls, and support are delivered in a group format. We do not guarantee individual attention, personalized strategy sessions, or dedicated one-on-one time with any coach or founder.</p>
+</div>
+<h2>3. No Guarantee of Income or Results</h2>
+<p>Any income figures, earnings examples, student results, or testimonials referenced on our website, in our marketing, or during sales calls are illustrative and exceptional, not typical. Your results will depend on your own effort, skill, market conditions, and factors outside our control. <strong>We make no guarantee, express or implied, that you will earn any specific amount of money or achieve any particular result from participating in the Program.</strong> Brand deals, retainers, and commissions referenced in our marketing depend on third-party brands and are not owed or guaranteed by AICL.</p>
+<h2>4. Payment</h2>
+<p>The Program is offered for a one-time investment or, where available, an approved payment plan disclosed to you before purchase. All prices are in U.S. Dollars unless otherwise stated. By providing payment information, you authorize us (or our payment processor) to charge the agreed amount, including any scheduled installments under a payment plan. You are responsible for all payments due under a payment plan regardless of your participation level or results.</p>
+<h2>5. Refund Policy</h2>
+<div class="callout">
+<p><strong>[CONFIRM EXACT TERMS BEFORE PUBLISHING]</strong> Based on what you told me: a conditional refund window applies. Suggested draft language below, adjust the day count and conditions to match what you actually enforce:</p>
+</div>
+<p>You may request a refund within <strong>[14 / 30] days</strong> of your enrollment date, provided that you have:</p>
+<ul>
+<li>Attended [X] live coaching call(s) or watched [X]% of the core training modules, and</li>
+<li>Submitted proof of completed action steps as outlined in onboarding (e.g., [specific deliverables]), and</li>
+<li>Requested the refund in writing to team@aicreatorlab.io within the window above</li>
+</ul>
+<p>Refund requests that do not meet these conditions, or that are submitted after the window closes, will not be honored. Approved refunds are issued to the original payment method within [X] business days. If you are on a payment plan, any refund does not relieve you of amounts already due for installments processed before your request, except as required by the conditions above.</p>
+<h2>6. Community Conduct</h2>
+<p>Members of the private community agree to act professionally and in good faith. We reserve the right to remove any member from the community, without refund, for harassment, abusive behavior, sharing or reselling Program materials without authorization, or conduct that we determine, in our sole discretion, is harmful to other members or to AICL.</p>
+<h2>7. Intellectual Property</h2>
+<p>All training materials, videos, templates, scripts, and other content provided through the Program are the property of AICL and are licensed to you for personal, non-commercial use only. You may not copy, resell, distribute, or publicly share Program materials without our prior written consent.</p>
+<h2>8. Third-Party Brands and Platforms</h2>
+<p>AICL facilitates access to a brand portfolio and platform relationships (e.g., Amazon, TikTok, Instagram, Facebook) but does not control these third parties. We are not responsible for changes to their policies, payouts, commission structures, or availability, and we do not guarantee that any specific brand deal will be offered to you or that any deal will remain available for any period of time.</p>
+<h2>9. Limitation of Liability</h2>
+<p>To the maximum extent permitted by law, AICL and its founders, employees, and contractors will not be liable for any indirect, incidental, special, or consequential damages, or for any loss of income or profits, arising from your participation in the Program or use of our website. Our total liability for any claim relating to the Program is limited to the amount you actually paid to AICL in the twelve (12) months preceding the claim.</p>
+<h2>10. Disclaimer of Warranties</h2>
+<p>The Program and website are provided "as is" and "as available," without warranties of any kind, express or implied, including implied warranties of merchantability or fitness for a particular purpose.</p>
+<h2>11. Governing Law and Disputes</h2>
+<p>These Terms are governed by the laws of the State of Montana, without regard to conflict-of-law principles. Any dispute arising from these Terms or the Program will be resolved exclusively in the state or federal courts located in Montana, and you consent to the personal jurisdiction of those courts.</p>
+<h2>12. Changes to These Terms</h2>
+<p>We may update these Terms from time to time. Continued use of the website or participation in the Program after changes are posted constitutes your acceptance of the updated Terms.</p>
+<h2>13. Contact</h2>
+<p>Questions about these Terms can be sent to team@aicreatorlab.io.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="float-cta" id="floatCta">
-  <a href="#apply" class="btn btn-primary btn-sm">Apply Now</a>
+<a href="#apply" class="btn btn-primary btn-sm">Apply Now</a>
 </div>
-<!-- Typeform embed -->
-<script>
-  /* Forward ref/trakyo_id tracking params from this page's own URL (query
-     string or #hash) into the Typeform widget as hidden field values, so
-     attribution keeps working. This must run BEFORE embed.js below loads,
-     and requires "ref" and "trakyo_id" to exist as Hidden Fields inside
-     the Typeform itself for the values to actually get recorded. */
-  (function(){
-    var qs = new URLSearchParams(window.location.search);
-    var hashStr = window.location.hash ? window.location.hash.replace(/^#/, '') : '';
-    var hs = new URLSearchParams(hashStr);
-    var ref = qs.get('ref') || hs.get('ref');
-    var trakyoId = qs.get('trakyo_id') || hs.get('trakyo_id');
-    var hidden = [];
-    if (ref) hidden.push('ref=' + encodeURIComponent(ref));
-    if (trakyoId) hidden.push('trakyo_id=' + encodeURIComponent(trakyoId));
-    if (hidden.length) {
-      var el = document.getElementById('tf-inline');
-      if (el) el.setAttribute('data-tf-hidden', hidden.join(','));
-    }
-  })();
-</script>
-<script src="https://embed.typeform.com/next/embed.js"></script>
-<!-- Vidalytics VSL embed — this is the ONE real copy of this script + div on the
-     whole site. The Mobile custom code block does NOT have its own copy of this;
-     on phone-sized screens it reaches over and borrows this exact element at
-     runtime. Never paste this script/div into the Mobile block too — a second
-     copy sharing this same id is what caused the original black-box-on-mobile
-     bug in the first place. -->
-<script type="text/javascript">
-(function (v, i, d, a, l, y, t, c, s) {
-    y='_'+d.toLowerCase();c=d+'L';if(!v[d]){v[d]={};}if(!v[c]){v[c]={};}if(!v[y]){v[y]={};}var vl='Loader',vli=v[y][vl],vsl=v[c][vl + 'Script'],vlf=v[c][vl + 'Loaded'],ve='Embed';
-    if (!vsl){vsl=function(u,cb){
-        if(t){cb();return;}s=i.createElement("script");s.type="text/javascript";s.async=1;s.src=u;
-        if(s.readyState){s.onreadystatechange=function(){if(s.readyState==="loaded"||s.readyState=="complete"){s.onreadystatechange=null;vlf=1;cb();}};}else{s.onload=function(){vlf=1;cb();};}
-        i.getElementsByTagName("head")[0].appendChild(s);
-    };}
-    vsl(l+'loader.min.js',function(){if(!vli){var vlc=v[c][vl];vli=new vlc();}vli.loadScript(l+'player.min.js',function(){var vec=v[d][ve];t=new vec();t.run(a);});});
-})(window, document, 'Vidalytics', 'vidalytics_embed_zosa3bAhEHrS8oqy', 'https://fast.vidalytics.com/embeds/Brc8QfTa/zosa3bAhEHrS8oqy/');
-</script>
-<script>
-  document.getElementById('yr').textContent = new Date().getFullYear();
-  /* ---- terms of service modal ---- */
-  (function(){
-    var overlay = document.getElementById('tosOverlay');
-    var openBtn = document.getElementById('tosOpenBtn');
-    var closeBtn = document.getElementById('tosCloseBtn');
-    if(!overlay || !openBtn || !closeBtn) return;
-    function open(){ overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
-    function close(){ overlay.classList.remove('open'); document.body.style.overflow = ''; }
-    openBtn.addEventListener('click', open);
-    closeBtn.addEventListener('click', close);
-    overlay.addEventListener('click', function(e){ if(e.target === overlay) close(); });
-    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
-  })();
-  /* ---- reveal on scroll ---- */
-  var revealEls = document.querySelectorAll('.reveal, .wall-item');
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-    });
-  }, {threshold:0.12});
-  revealEls.forEach(function(el){ io.observe(el); });
-  /* ---- count up stats ---- */
-  var counters = document.querySelectorAll('.stat-num');
-  var cIo = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if(!entry.isIntersecting) return;
-      cIo.unobserve(entry.target);
-      var el = entry.target;
-      var target = parseInt(el.getAttribute('data-count'), 10) || 0;
-      var prefix = el.getAttribute('data-prefix') || '';
-      var dur = 1600, start = null;
-      function step(ts){
-        if(!start) start = ts;
-        var p = Math.min((ts-start)/dur, 1);
-        var eased = 1 - Math.pow(1-p, 3);
-        var val = Math.floor(eased * target);
-        el.textContent = prefix + val.toLocaleString('en-US');
-        if(p < 1) requestAnimationFrame(step);
-        else el.textContent = prefix + target.toLocaleString('en-US');
-      }
-      requestAnimationFrame(step);
-    });
-  }, {threshold:0.4});
-  counters.forEach(function(el){ cIo.observe(el); });
-  /* ---- youtube lite embed on click ---- */
-  document.querySelectorAll('.cs-thumb.yt').forEach(function(box){
-    box.addEventListener('click', function(){
-      var id = box.getAttribute('data-yt');
-      box.innerHTML = '<iframe width="100%" height="100%" style="position:absolute;inset:0;" src="https://www.youtube.com/embed/'+id+'?autoplay=1" title="YouTube video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-      box.style.position='relative';
-    });
-  });
-  /* ---- floating CTA once you've scrolled past the hero form ---- */
-  var floatCta = document.getElementById('floatCta');
-  window.addEventListener('scroll', function(){
-    var trigger = window.innerHeight * 1.15;
-    if(window.scrollY > trigger){ floatCta.classList.add('show'); }
-    else{ floatCta.classList.remove('show'); }
-  });
-</script>
 </body>
 </html>
